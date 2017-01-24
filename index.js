@@ -18,7 +18,7 @@ slapp.route('handleHowAreYou', (msg) => {
   msg.say(['Me too', 'Noted', 'That is interesting'])
 })
 
-Console.log("Attaching to express")
+console.log("Attaching to express")
 
 // attach handlers to an Express app
 slapp.attachToExpress(require('express')()).listen(process.env.PORT)

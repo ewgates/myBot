@@ -2,7 +2,7 @@ const Slapp = require('slapp')
 const BeepBoopContext = require('slapp-context-beepboop')
 if (!process.env.PORT) throw Error('PORT missing but required')
 
-Console.log("Initializing Slapp")
+console.log("Initializing Slapp")
 
 var slapp = Slapp({ context: BeepBoopContext() })
 

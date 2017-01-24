@@ -1,23 +1,12 @@
 const Slapp = require('slapp')
 const BeepBoopContext = require('slapp-context-beepboop')
-const ConvoStore = require('slapp-convo-beepboop') 
-const app = require('express')
-var PORT = process.env.PORT
+if (!process.env.PORT) throw Error('PORT missing but required')
 
-if (!PORT) {
-    console.log('PORT not found, defaulting to 80.')
-    PORT = 80
-}
+Console.log("Initializing Slapp")
 
-var slapp = Slapp({
-    verify_token: process.env.SLACK_VERIFY_TOKEN,
-    convo_store: ConvoStore,
-    context: BeepBoopContext,
-    log: true,
-    colors: true
-})
+var slapp = Slapp({ context: BeepBoopContext() })
 
-slapp.message('hi', ['direct_mention', 'direct_message'], (msg, text, greeting) => {
+slapp.message('^(hi|hello|hey).*', ['direct_mention', 'direct_message'], (msg, text, greeting) => {
   msg
     .say(`${greeting}, how are you?`)
     .route('handleHowAreYou')  // where to route the next msg in the conversation
@@ -29,5 +18,7 @@ slapp.route('handleHowAreYou', (msg) => {
   msg.say(['Me too', 'Noted', 'That is interesting'])
 })
 
+Console.log("Attaching to express")
+
 // attach handlers to an Express app
-slapp.attachToExpress(app()).listen(PORT)
+slapp.attachToExpress(require('express')()).listen(process.env.PORT)
